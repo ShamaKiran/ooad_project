@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Conference Details</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container mt-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/conference-user/conferences}">Conferences</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" th:text="${conference.name}">Conference Name</li>
+                </ol>
+            </nav>
+
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title" th:text="${conference.name}">Conference Name</h2>
+                    <hr/>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Date and Time</h5>
+                            <p>
+                                <strong>Starts:</strong> 
+                                <span th:text="${#temporals.format(conference.startDate, 'MMMM dd, yyyy HH:mm')}">Start Date</span>
+                            </p>
+                            <p>
+                                <strong>Ends:</strong> 
+                                <span th:text="${#temporals.format(conference.endDate, 'MMMM dd, yyyy HH:mm')}">End Date</span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Location</h5>
+                            <p th:text="${conference.venue}">Venue</p>
+                            <p th:if="${conference.virtualLink}" class="mt-2">
+                                <strong>Virtual Link:</strong>
+                                <a th:href="${conference.virtualLink}" target="_blank" th:text="${conference.virtualLink}">Virtual Link</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5>Description</h5>
+                        <p class="text-justify" th:text="${conference.description}">Conference description</p>
+                    </div>
+
+                    <div class="mb-4" th:if="${conference.topics != null and !conference.topics.empty}">
+                        <h5>Topics</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-primary" th:each="topic : ${conference.topics}" th:text="${topic}">Topic</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5>Registration</h5>
+                        <p th:if="${conference.registrationOpen}">
+                            Registration is currently open. 
+                            <a th:href="@{/conference-user/conferences/{id}/register(id=${conference.id})}" 
+                               class="btn btn-primary">Register Now</a>
+                        </p>
+                        <p th:unless="${conference.registrationOpen}" class="text-muted">
+                            Registration is currently closed.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
