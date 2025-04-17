@@ -150,4 +150,34 @@ public class PaperServiceImpl implements PaperService {
         paperRepository.save(paper);
         log.info("Review submitted for paper {}. Average score: {}", paperId, averageScore);
     }
+
+    @Override
+    public List<Paper> getPapersForDecision() {
+        // Get papers that are under review or reviewed
+        List<Paper> papers = paperRepository.findByStateIn(List.of(PaperState.UNDER_REVIEW));
+        
+        // Filter papers that have at least one review
+        return papers.stream()
+            .filter(paper -> paper.getReviews() != null && !paper.getReviews().isEmpty())
+            .toList();
+    }
+
+    @Override
+    @Transactional
+    public void makePaperDecision(Long paperId, PaperState decision) {
+        if (decision != PaperState.ACCEPTED && decision != PaperState.REJECTED) {
+            throw new IllegalArgumentException("Decision must be either ACCEPTED or REJECTED");
+        }
+
+        Paper paper = getPaperById(paperId);
+        
+        // Ensure paper has reviews
+        if (paper.getReviews() == null || paper.getReviews().isEmpty()) {
+            throw new RuntimeException("Cannot make decision on paper without reviews");
+        }
+        
+        paper.setState(decision);
+        paperRepository.save(paper);
+        log.info("Decision made for paper {}: {}", paperId, decision);
+    }
 }

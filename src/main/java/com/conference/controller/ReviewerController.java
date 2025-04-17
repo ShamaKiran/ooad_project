@@ -118,4 +118,20 @@ public class ReviewerController {
             return "reviewer/my-reviews";
         }
     }
+
+    @GetMapping("/papers/{id}/download")
+    public ResponseEntity<byte[]> downloadPaper(@PathVariable Long id) {
+        try {
+            Paper paper = paperService.getPaperById(id);
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType(paper.getContentType()));
+            headers.setContentDispositionFormData("attachment", paper.getFileName());
+            
+            return new ResponseEntity<>(paper.getData(), headers, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error downloading paper {}: {}", id, e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
