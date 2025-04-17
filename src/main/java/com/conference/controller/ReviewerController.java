@@ -98,4 +98,24 @@ public class ReviewerController {
             return "redirect:/reviewer/papers/" + id + "/review";
         }
     }
+
+    @GetMapping("/reviews")
+    public String viewMyReviews(Model model, Authentication authentication) {
+        try {
+            String username = authentication.getName();
+            log.info("Reviewer {} accessing their reviews", username);
+            
+            // Get papers reviewed by this reviewer using the correct method
+            List<Paper> reviewedPapers = paperService.getPapersByReviewer(username);
+            
+            model.addAttribute("papers", reviewedPapers);
+            log.info("Found {} papers reviewed by {}", reviewedPapers.size(), username);
+            
+            return "reviewer/my-reviews";
+        } catch (Exception e) {
+            log.error("Error in viewMyReviews for {}: {}", authentication.getName(), e.getMessage());
+            model.addAttribute("error", "Error loading reviews: " + e.getMessage());
+            return "reviewer/my-reviews";
+        }
+    }
 }
