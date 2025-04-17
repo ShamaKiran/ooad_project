@@ -1,5 +1,7 @@
 # Conference Management System
 
+The one where PC Chair can make a decision.
+
 A Spring Boot application for managing conferences, sessions, speakers, and attendees.
 
 ## Features
@@ -35,34 +37,5 @@ A Spring Boot application for managing conferences, sessions, speakers, and atte
 
 1. Clone the repository:
 ```bash
-git clone [repository-url]
-cd conference-management
-```
-
-2. Build the project:
-```bash
-mvn clean install
-```
-
-3. Run the application:
-```bash
-mvn spring-boot:run
-```
-
-4. Access the application at `http://localhost:8080`
-
-## Database
-
-The application uses H2 in-memory database. You can access the H2 console at:
-- URL: `http://localhost:8080/h2-console`
-- JDBC URL: `jdbc:h2:mem:conferencedb`
-- Username: `sa`
-- Password: (empty)
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request 
+git clone https://github.com/ShamaKiran/ooad_project.git
+cd ooad_project
